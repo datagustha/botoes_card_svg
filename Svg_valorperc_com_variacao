@@ -1,0 +1,34 @@
+Svg Comissao variacao = 
+VAR PercentualValor = [% comissao mes anterior] 
+VAR _atual = [$ comissao]
+VAR _anterior = [comissao mes anterior]
+var dif = _atual - _anterior
+VAR _dif = FORMAT( dif , "R$ #,##0.00")
+RETURN
+IF(
+    NOT(ISBLANK(PercentualValor)),
+    VAR PercentualTexto = FORMAT(PercentualValor, "0.00%")
+
+    VAR CorTexto =
+        IF(
+            PercentualValor >= 1, "#137333",
+            IF(PercentualValor >= 0.9, "#856211", "#E41414")
+        )
+    VAR CorFundo =
+        IF(
+            PercentualValor >= 1, "rgba(2,177,90,0.15)",
+            IF(PercentualValor >= 0.9, "rgba(252,201,13,0.15)", "rgba(228,20,20,0.15)")
+        )
+
+    VAR Svg =
+        // Linha do valor da diferença
+        "<text x='55' y='14' text-anchor='middle' font-family='Segoe UI' font-size='12' font-weight='600' fill='" & CorTexto & "'>" & _dif & "</text>" &
+        // Retângulo de fundo
+        "<rect x='10' y='18' rx='6' ry='6' width='90' height='18' fill='" & CorFundo & "' />" &
+        // Percentual dentro do retângulo
+        "<text x='55' y='32' text-anchor='middle' font-family='Segoe UI' font-size='14' font-weight='600' fill='" & CorTexto & "'>" & PercentualTexto & "</text>"
+
+    RETURN
+        "data:image/svg+xml;utf8,<svg width='110' height='45' xmlns='http://www.w3.org/2000/svg'>" & Svg & "</svg>",
+    BLANK()
+)
