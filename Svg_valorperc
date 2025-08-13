@@ -1,0 +1,28 @@
+ValorRecebido e perctotal = 
+VAR _Valor1 = FORMAT([$ Recebido], "R$ #,###.00")
+VAR _Valor2 = FORMAT([recebido total], "0.00%")
+VAR _Classificacao = [$ Recebido]
+
+RETURN
+IF(
+    NOT(ISBLANK(_Classificacao)),
+    "data:image/svg+xml;utf8, <svg width='90' height='34' xmlns='http://www.w3.org/2000/svg'>
+      <!-- Texto oculto para ordenação -->
+      <text x='' y='0' font-size='1' fill='white' opacity='0'>" & 
+          FORMAT(_Classificacao, "000000000") & 
+      "</text>
+
+      <!-- Valor da Venda -->
+      <text x='3' y='16' text-anchor='start'
+            font-family='Segoe UI Semibold' font-size='11.5' fill='#171717'>
+          " & _Valor1 & "
+      </text>
+
+      <!-- Valor da Participação da Venda -->
+      <text x='3' y='30' text-anchor='start'
+            font-family='Segoe UI Semibold' font-size='11' fill='#757575'>
+          " & _Valor2 & "
+      </text>
+    </svg>",
+    BLANK()
+)
